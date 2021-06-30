@@ -1,4 +1,4 @@
-package org.openjfx;
+package org.openjfx.controller;
 
 import java.io.IOException;
 import javafx.fxml.FXML;
