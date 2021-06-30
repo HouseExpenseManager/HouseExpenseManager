@@ -3,6 +3,8 @@ package org.openjfx.service;
 import org.openjfx.dao.TenantDao;
 import org.openjfx.model.Tenant;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class TenantService {
@@ -29,11 +31,19 @@ public class TenantService {
         return tenantDataAccessService.selectAll();
     }
 
-    public Tenant delete(Tenant model) {
-        return tenantDataAccessService.delete(model);
+    public void delete(Tenant model) {
+        tenantDataAccessService.delete(model);
     }
 
     public Tenant findByPhoneNumber(Integer phoneNumber) {
         return tenantDataAccessService.findByPhoneNumber(phoneNumber);
+    }
+
+    public void notifyMe(String text, Tenant tenant) {
+        DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
+        LocalDateTime dateAndTime = LocalDateTime.now();
+        String stringDateTime = myFormatObj.format(dateAndTime);
+        String notification = "Tenant : " + tenant.getUserName() + " : " + stringDateTime + "  " + text;
+        tenant.getNotifications().add(notification);
     }
 }

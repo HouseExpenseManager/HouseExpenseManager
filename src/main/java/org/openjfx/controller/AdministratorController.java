@@ -4,15 +4,18 @@ import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.collections.transformation.FilteredList;
 import javafx.collections.transformation.SortedList;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import org.openjfx.App;
 import org.openjfx.model.Person;
 import org.openjfx.model.Tenant;
 import org.openjfx.service.LoginService;
 import org.openjfx.service.PersonService;
 import org.openjfx.service.TenantService;
+import org.openjfx.util.InitApplication;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -23,15 +26,18 @@ import java.util.ResourceBundle;
 
 public class AdministratorController implements Initializable {
 
-    private LoginService loginService;
     private TenantService tenantService;
     private PersonService personService;
     public TableColumn<Person, String> userName;
     public TableColumn<Person, Integer> phoneNumber;
     private final ObservableList<Person> dataList = FXCollections.observableArrayList();
     private final ObservableList<String> comboBoxTopics = FXCollections.observableArrayList();
-    private static final File personsFile = new File("persons.txt");
+    private final File personsFile = new File("persons.txt");
 
+    @FXML
+    public TextField notifyTextField;
+    @FXML
+    public Button notifyButton;
     @FXML
     public TextField filterField;
     @FXML
@@ -46,10 +52,15 @@ public class AdministratorController implements Initializable {
     public TextField userNameTenant;
     @FXML
     public TextField phoneNumberTenant;
+    private static int isOk = 0;
 
-    public void initTable() {
+    public void initTable() throws IOException {
         userName.setCellValueFactory(new PropertyValueFactory<>("user name"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
+        if (isOk != 0) {
+            InitApplication.serializeTenantsAfterSomeOperations();
+        }
+        dataList.addAll(tenantService.selectAll());
     }
 
     public void constructSearchEngine() throws IOException {
@@ -80,18 +91,17 @@ public class AdministratorController implements Initializable {
         SortedList<Person> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tableview.comparatorProperty());
         tableview.setItems(sortedData);
+        isOk = 1;
     }
 
     public void addTenant() throws IOException {
         Tenant toBeAdded = new Tenant(userNameTenant.getText(), Integer.parseInt(phoneNumberTenant.getText()));
         personService.insert(toBeAdded);
         tenantService.insert(toBeAdded);
-        personService.selectAll().forEach(System.out::println);
         FileOutputStream fileOutputStream = new FileOutputStream(personsFile);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         for (Tenant tenant : tenantService.selectAll()) {
             objectOutputStream.writeObject(tenant);
-
         }
         fileOutputStream.close();
     }
@@ -100,13 +110,11 @@ public class AdministratorController implements Initializable {
         Tenant toBeDeleted = new Tenant(userNameTenant.getText(), Integer.parseInt(phoneNumberTenant.getText()));
         personService.delete(toBeDeleted);
         tenantService.delete(toBeDeleted);
-        personService.selectAll().forEach(System.out::println);
         FileOutputStream fileOutputStream = new FileOutputStream(personsFile);
         ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
         for (Tenant tenant : tenantService.selectAll()) {
             objectOutputStream.writeObject(tenant);
         }
-        fileOutputStream.close();
     }
 
     @Override
@@ -122,7 +130,6 @@ public class AdministratorController implements Initializable {
     }
 
     public void setLoginService(LoginService loginService) {
-        this.loginService = loginService;
     }
 
     public void setTenantService(TenantService tenantService) {
@@ -131,5 +138,15 @@ public class AdministratorController implements Initializable {
 
     public void setPersonService(PersonService personService) {
         this.personService = personService;
+    }
+
+    public void sendNotificationsToTenant() {
+        for (Tenant tenant : tenantService.selectAll()) {
+            tenantService.notifyMe(notifyTextField.getText() , tenant);
+        }
+    }
+
+    public void logout(ActionEvent actionEvent) throws IOException {
+        App.setRoot("login", 360, 650);
     }
 }

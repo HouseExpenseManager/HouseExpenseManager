@@ -23,6 +23,8 @@ public class LoginService {
 
     public String logIn(Person formUser) throws IOException {
         List<Tenant> tenants = tenantService.selectAll();
+        tenants.addAll(InitApplication.loadTenantCredentials());
+        tenants.forEach(System.out::println);
         Person myUser = personService.findByPhoneNumber(formUser.getPhoneNumber());
         if (myUser == null) {
             return null;

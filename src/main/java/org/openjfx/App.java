@@ -31,7 +31,8 @@ public class App extends Application {
 
     public static void main(String[] args) throws IOException {
         InitApplication.initAdminCredentials();
-        InitApplication.deserializeInitialTenants("persons.txt");
+        InitApplication.deserializeInitialTenants();
+        InitApplication.loadTenantCredentials();
         launch();
     }
 }

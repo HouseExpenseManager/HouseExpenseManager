@@ -34,9 +34,9 @@ public class InitApplication {
         return Administrator.getInstance(name, phoneNumber);
     }
 
-    public static void deserializeInitialTenants(String fileName) throws IOException {
+    public static void deserializeInitialTenants() throws IOException {
 
-        FileInputStream fileInputStream = new FileInputStream(fileName);
+        FileInputStream fileInputStream = new FileInputStream("persons.txt");
         ObjectInputStream objectInputStream = new ObjectInputStream(fileInputStream);
         List<Tenant> tenants = new ArrayList<>();
         TenantService tenantService = TenantService.getInstance();
@@ -52,7 +52,41 @@ public class InitApplication {
         for (Tenant tenant : tenants) {
             tenantService.insert(tenant);
         }
+    }
+
+    public static List<Tenant> loadTenantCredentials() {
+        File file = new File("tenantCredentials");
+        List<Tenant> tenants = new ArrayList<>();
+        String line;
+        String name;
+        int phoneNumber;
+        try {
+            BufferedReader br = new BufferedReader(new FileReader(file));
+            while ((line = br.readLine()) != null) {
+                String[] arguments = line.split(" ");
+                name = arguments[0];
+                phoneNumber = Integer.parseInt(arguments[1]);
+                tenants.add(new Tenant(name, phoneNumber));
+                personService.insert(new Tenant(name, phoneNumber));
+            }
+            br.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
         tenants.forEach(System.out::println);
+        return tenants;
+    }
+
+    public static void serializeTenantsAfterSomeOperations() throws IOException {
+        TenantService tenantService = TenantService.getInstance();
+        List<Tenant> tenants = tenantService.selectAll();
+        File f = new File("persons.txt");
+        FileOutputStream fileOutputStream = new FileOutputStream(f);
+        ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
+        for (Tenant tenant : tenants) {
+            objectOutputStream.writeObject(tenant);
+        }
+        fileOutputStream.close();
     }
 }
 

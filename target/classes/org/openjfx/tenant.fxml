@@ -1,14 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
 
-<AnchorPane xmlns="http://javafx.com/javafx"
-            xmlns:fx="http://javafx.com/fxml"
-            fx:controller="org.openjfx.controller.TenantController"
-            prefHeight="400.0" prefWidth="600.0">
+<AnchorPane prefHeight="494.0" prefWidth="726.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.openjfx.controller.TenantController">
+    <Pane layoutY="2.0" prefHeight="51.0" prefWidth="725.0" style="-fx-background-color: #228B22;">
+        <Label layoutX="17.0" layoutY="8.0" text="Tenant Window" textFill="WHITE">
+            <font>
+                <Font name="Comic Sans MS Bold Italic" size="25.0" />
+            </font>
+        </Label>
 
+    </Pane>
+    <Pane layoutY="53.0" prefHeight="5.0" prefWidth="725.0" style="-fx-background-color: #ECF142;" />
+    <TextArea fx:id="notificationArea" layoutX="193.0" layoutY="139.0" prefHeight="304.0" prefWidth="340.0" />
+    <Button fx:id="showNotificationsButton" layoutX="286.0" layoutY="81.0" mnemonicParsing="false" onAction="#showNotifications" prefHeight="36.0" prefWidth="152.0" style="-fx-background-color: #f59965; -fx-background-radius: 5px;" text="Show Notifications" />
+    <Button fx:id="logOutButton" layoutX="14.0" layoutY="443.0" mnemonicParsing="false" onAction="#logout" prefHeight="36.0" prefWidth="81.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Log Out" />
 </AnchorPane>
