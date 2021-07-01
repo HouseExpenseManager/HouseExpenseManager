@@ -10,6 +10,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.App;
+import org.openjfx.model.BillTypes;
 import org.openjfx.model.Person;
 import org.openjfx.model.Tenant;
 import org.openjfx.service.LoginService;
@@ -32,8 +33,11 @@ public class AdministratorController implements Initializable {
     public TableColumn<Person, Integer> phoneNumber;
     private final ObservableList<Tenant> dataList = FXCollections.observableArrayList();
     private final ObservableList<String> comboBoxTopics = FXCollections.observableArrayList();
+    private final ObservableList<String> comboBoxTypes = FXCollections.observableArrayList();
     private final File personsFile = new File("persons.txt");
 
+    @FXML
+    public ComboBox<String> typesCombobox;
     @FXML
     public TextField notifyTextField;
     @FXML
@@ -95,6 +99,13 @@ public class AdministratorController implements Initializable {
         isOk = 1;
     }
 
+    public void initBillTypeCombobox() {
+        for (BillTypes value : BillTypes.values()) {
+            comboBoxTypes.add(value.toString());
+        }
+        typesCombobox.setItems(comboBoxTypes);
+    }
+
     public void addTenant() throws IOException {
         Tenant toBeAdded = new Tenant(userNameTenant.getText(), Integer.parseInt(phoneNumberTenant.getText()));
         personService.insert(toBeAdded);
@@ -123,6 +134,7 @@ public class AdministratorController implements Initializable {
         setLoginService(LoginService.getInstance());
         setTenantService(TenantService.getInstance());
         setPersonService(PersonService.getInstance());
+        initBillTypeCombobox();
         try {
             constructSearchEngine();
         } catch (IOException e) {
@@ -143,7 +155,7 @@ public class AdministratorController implements Initializable {
 
     public void sendNotificationsToTenant() {
         for (Tenant tenant : tenantService.selectAll()) {
-            tenantService.notifyMe(notifyTextField.getText() , tenant);
+            tenantService.notifyMe(notifyTextField.getText(), tenant, typesCombobox.getValue());
         }
     }
 

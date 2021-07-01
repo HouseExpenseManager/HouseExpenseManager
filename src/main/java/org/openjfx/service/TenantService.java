@@ -39,11 +39,12 @@ public class TenantService {
         return tenantDataAccessService.findByPhoneNumber(phoneNumber);
     }
 
-    public void notifyMe(String text, Tenant tenant) {
+    public void notifyMe(String sum, Tenant tenant, String billType) {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime dateAndTime = LocalDateTime.now();
         String stringDateTime = myFormatObj.format(dateAndTime);
-        String notification = "Tenant : " + tenant.getUserName() + " : " + stringDateTime + "  " + text;
+        String notification = "Tenant : " + tenant.getUserName() + ": you have to pay for " + billType + " the following amount  " + sum
+                + " until: " + stringDateTime;
         tenant.getNotifications().add(notification);
     }
 }
