@@ -42,7 +42,7 @@ public class LoginController implements Initializable {
             if (option != null) {
                 idGrasper = loginService.getIdGrasper();
                 if (option.equals("TENANT")) {
-                    App.setRoot("tenant", 700, 500);
+                    App.setRoot("tenant", 800, 500);
                 } else
                     App.setRoot("administrator", 800, 520);
             } else {

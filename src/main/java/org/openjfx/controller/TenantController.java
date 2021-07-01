@@ -13,6 +13,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.App;
 import org.openjfx.model.Bill;
 import org.openjfx.model.Tenant;
+import org.openjfx.service.AdministratorService;
 import org.openjfx.service.LoginService;
 import org.openjfx.service.TenantService;
 
@@ -23,8 +24,10 @@ import java.util.ResourceBundle;
 
 public class TenantController implements Initializable {
 
-    public LoginService loginService;
-    public TenantService tenantService;
+    private LoginService loginService;
+    private TenantService tenantService;
+    private AdministratorService administratorService;
+
     @FXML
     public TextArea notificationArea;
     @FXML
@@ -64,10 +67,19 @@ public class TenantController implements Initializable {
         dataList.addAll(tenant.getBills());
     }
 
+    public void payBills() throws IOException {
+        Bill payedBill = tableview.getSelectionModel().getSelectedItem();
+        Tenant tenant = tenantService.findByPhoneNumber(loginService.getIdGrasper());
+        String notification = tenant.getUserName() + "  " + payedBill;
+        administratorService.setCurrentNotification(notification);
+        administratorService.notifyMe();
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         setLoginService(LoginService.getInstance());
         setTenantService(TenantService.getInstance());
+        setAdministratorService(AdministratorService.getInstance());
     }
 
     public void setLoginService(LoginService loginService) {
@@ -76,5 +88,9 @@ public class TenantController implements Initializable {
 
     public void setTenantService(TenantService tenantService) {
         this.tenantService = tenantService;
+    }
+
+    public void setAdministratorService(AdministratorService administratorService) {
+        this.administratorService = administratorService;
     }
 }

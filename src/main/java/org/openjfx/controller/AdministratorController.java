@@ -16,7 +16,6 @@ import org.openjfx.model.Tenant;
 import org.openjfx.service.LoginService;
 import org.openjfx.service.PersonService;
 import org.openjfx.service.TenantService;
-import org.openjfx.util.InitApplication;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -56,14 +55,10 @@ public class AdministratorController implements Initializable {
     public TextField userNameTenant;
     @FXML
     public TextField phoneNumberTenant;
-    private static int isOk = 0;
 
-    public void initTable() throws IOException {
+    public void initTable() {
         userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
-        if (isOk != 0) {
-            InitApplication.serializeTenantsAfterSomeOperations();
-        }
         dataList.addAll(tenantService.selectAll());
     }
 
@@ -96,7 +91,7 @@ public class AdministratorController implements Initializable {
         sortedData.comparatorProperty().bind(tableview.comparatorProperty());
         tableview.setItems(sortedData);
         tableview.getItems().forEach(System.out::println);
-        isOk = 1;
+        int isOk = 1;
     }
 
     public void initBillTypeCombobox() {
@@ -161,5 +156,9 @@ public class AdministratorController implements Initializable {
 
     public void logout(ActionEvent actionEvent) throws IOException {
         App.setRoot("login", 360, 500);
+    }
+
+    public void showPayedBills() throws IOException {
+        App.setRoot("paidBills", 700, 540);
     }
 }
