@@ -30,7 +30,7 @@ public class AdministratorController implements Initializable {
     private PersonService personService;
     public TableColumn<Person, String> userName;
     public TableColumn<Person, Integer> phoneNumber;
-    private final ObservableList<Person> dataList = FXCollections.observableArrayList();
+    private final ObservableList<Tenant> dataList = FXCollections.observableArrayList();
     private final ObservableList<String> comboBoxTopics = FXCollections.observableArrayList();
     private final File personsFile = new File("persons.txt");
 
@@ -41,7 +41,7 @@ public class AdministratorController implements Initializable {
     @FXML
     public TextField filterField;
     @FXML
-    public TableView<Person> tableview;
+    public TableView<Tenant> tableview;
     @FXML
     public ComboBox<String> comboBox;
     @FXML
@@ -55,7 +55,7 @@ public class AdministratorController implements Initializable {
     private static int isOk = 0;
 
     public void initTable() throws IOException {
-        userName.setCellValueFactory(new PropertyValueFactory<>("user name"));
+        userName.setCellValueFactory(new PropertyValueFactory<>("userName"));
         phoneNumber.setCellValueFactory(new PropertyValueFactory<>("phoneNumber"));
         if (isOk != 0) {
             InitApplication.serializeTenantsAfterSomeOperations();
@@ -64,7 +64,7 @@ public class AdministratorController implements Initializable {
     }
 
     public void constructSearchEngine() throws IOException {
-        FilteredList<Person> filteredData = new FilteredList<>(dataList, b -> true);
+        FilteredList<Tenant> filteredData = new FilteredList<>(dataList, b -> true);
         initTable();
         tableview.setItems(filteredData);
         comboBoxTopics.addAll("userName", "phoneNumber");
@@ -88,9 +88,10 @@ public class AdministratorController implements Initializable {
             }
             return false;
         }));
-        SortedList<Person> sortedData = new SortedList<>(filteredData);
+        SortedList<Tenant> sortedData = new SortedList<>(filteredData);
         sortedData.comparatorProperty().bind(tableview.comparatorProperty());
         tableview.setItems(sortedData);
+        tableview.getItems().forEach(System.out::println);
         isOk = 1;
     }
 
@@ -147,6 +148,6 @@ public class AdministratorController implements Initializable {
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
-        App.setRoot("login", 360, 650);
+        App.setRoot("login", 360, 500);
     }
 }

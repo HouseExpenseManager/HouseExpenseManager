@@ -19,4 +19,11 @@ public class Tenant extends Person implements Serializable {
     public void setNotifications(List<String> notifications) {
         this.notifications = notifications;
     }
+
+    @Override
+    public String toString() {
+        return "Tenant{" +
+                "notifications=" + notifications +
+                '}';
+    }
 }

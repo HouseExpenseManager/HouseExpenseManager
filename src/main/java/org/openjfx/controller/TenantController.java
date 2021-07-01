@@ -26,7 +26,7 @@ public class TenantController implements Initializable {
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
-        App.setRoot("login", 360, 650);
+        App.setRoot("login", 360, 500);
     }
 
     @Override
