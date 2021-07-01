@@ -7,7 +7,7 @@ import java.util.List;
 
 public class Tenant extends Person implements Serializable {
 
-    private List<String> notifications = new ArrayList<>();
+    private List<Bill> bills = new ArrayList<>();
     private Date dateOfAccommodation;
 
     public Tenant(String userName, Integer phoneNumber) {
@@ -19,12 +19,12 @@ public class Tenant extends Person implements Serializable {
         this.dateOfAccommodation = dateOfAccommodation;
     }
 
-    public List<String> getNotifications() {
-        return notifications;
+    public List<Bill> getBills() {
+        return bills;
     }
 
-    public void setNotifications(List<String> notifications) {
-        this.notifications = notifications;
+    public void setBills(List<Bill> bills) {
+        this.bills = bills;
     }
 
     public Date getDateOfAccommodation() {
@@ -38,7 +38,7 @@ public class Tenant extends Person implements Serializable {
     @Override
     public String toString() {
         return "Tenant{" +
-                "notifications=" + notifications +
+                "bills=" + bills +
                 ", dateOfAccommodation=" + dateOfAccommodation +
                 '}';
     }

@@ -1,32 +1,67 @@
 package org.openjfx.controller;
 
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
+import javafx.collections.transformation.FilteredList;
 import javafx.event.ActionEvent;
+import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.TextArea;
+import javafx.scene.control.cell.PropertyValueFactory;
 import org.openjfx.App;
+import org.openjfx.model.Bill;
 import org.openjfx.model.Tenant;
 import org.openjfx.service.LoginService;
 import org.openjfx.service.TenantService;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Date;
 import java.util.ResourceBundle;
 
 public class TenantController implements Initializable {
 
-    public TextArea notificationArea;
     public LoginService loginService;
     public TenantService tenantService;
+    @FXML
+    public TextArea notificationArea;
+    @FXML
+    public TableView<Bill> tableview;
+    private final ObservableList<Bill> dataList = FXCollections.observableArrayList();
+    @FXML
+    public TableColumn<Bill, Integer> id;
+    @FXML
+    public TableColumn<Bill, String> type;
+    @FXML
+    public TableColumn<Bill, Date> dateOfRelease;
+    @FXML
+    public TableColumn<Bill, Boolean> status;
+    @FXML
+    public TableColumn<Bill, Date> dateOfPayment;
+    @FXML
+    public TableColumn<Bill, Integer> totalAmount;
 
     public void showNotifications(ActionEvent actionEvent) {
-        Tenant tenant = tenantService.findByPhoneNumber(loginService.getIdGrasper());
-        for (String notification : tenant.getNotifications()) {
-            notificationArea.appendText(notification + "\n");
-        }
+        FilteredList<Bill> filteredData = new FilteredList<>(dataList, b -> true);
+        initTable();
+        tableview.setItems(filteredData);
     }
 
     public void logout(ActionEvent actionEvent) throws IOException {
         App.setRoot("login", 360, 500);
+    }
+
+    void initTable() {
+        id.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        type.setCellValueFactory(new PropertyValueFactory<>("type"));
+        dateOfRelease.setCellValueFactory(new PropertyValueFactory<>("dateOfRelease"));
+        status.setCellValueFactory(new PropertyValueFactory<>("status"));
+        dateOfPayment.setCellValueFactory(new PropertyValueFactory<>("dateOfPayment"));
+        totalAmount.setCellValueFactory(new PropertyValueFactory<>("totalAmount"));
+        Tenant tenant = tenantService.findByPhoneNumber(loginService.getIdGrasper());
+        dataList.addAll(tenant.getBills());
     }
 
     @Override

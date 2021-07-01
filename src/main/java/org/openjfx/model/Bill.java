@@ -11,6 +11,14 @@ public class Bill {
     private Date dateOfPayment;
     private int totalAmount;
 
+    public Bill(int ID, String type, Date dateOfRelease, boolean status, int totalAmount) {
+        this.ID = ID;
+        this.type = type;
+        this.dateOfRelease = dateOfRelease;
+        this.status = status;
+        this.totalAmount = totalAmount;
+    }
+
     public Bill(int ID, BillTypes name, Date dateOfRelease, String type, boolean status, Date dateOfPayment, int totalAmount) {
         this.ID = ID;
         this.name = name;

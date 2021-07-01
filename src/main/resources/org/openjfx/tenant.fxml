@@ -14,7 +14,17 @@
 
     </Pane>
     <Pane layoutY="53.0" prefHeight="5.0" prefWidth="725.0" style="-fx-background-color: #ECF142;" />
-    <TextArea fx:id="notificationArea" layoutX="193.0" layoutY="139.0" prefHeight="304.0" prefWidth="340.0" />
     <Button fx:id="showNotificationsButton" layoutX="286.0" layoutY="81.0" mnemonicParsing="false" onAction="#showNotifications" prefHeight="36.0" prefWidth="152.0" style="-fx-background-color: #f59965; -fx-background-radius: 5px;" text="Show Notifications" />
     <Button fx:id="logOutButton" layoutX="14.0" layoutY="443.0" mnemonicParsing="false" onAction="#logout" prefHeight="36.0" prefWidth="81.0" style="-fx-background-color: red; -fx-text-fill: white;" text="Log Out" />
+    <TableView fx:id="tableview" layoutX="84.0" layoutY="132.0" prefHeight="293.0" prefWidth="542.0" style="-fx-selection-bar: red;">
+        <columns>
+            <TableColumn fx:id="id" prefWidth="80.1999740600586" text="Id" />
+            <TableColumn fx:id="type" prefWidth="101.39996337890625" text="Type" />
+            <TableColumn fx:id="dateOfRelease" prefWidth="101.0" text="Release" />
+            <TableColumn fx:id="status" prefWidth="76.0" text="Status" />
+            <TableColumn fx:id="dateOfPayment" prefWidth="96.60006713867188" text="Payment Day" />
+            <TableColumn fx:id="totalAmount" prefWidth="92.199951171875" text="Amount" />
+        </columns>
+    </TableView>
+
 </AnchorPane>

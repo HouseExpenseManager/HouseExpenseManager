@@ -1,10 +1,13 @@
 package org.openjfx.service;
 
 import org.openjfx.dao.TenantDao;
+import org.openjfx.model.Bill;
 import org.openjfx.model.Tenant;
 
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.Date;
 import java.util.List;
 
 public class TenantService {
@@ -43,8 +46,7 @@ public class TenantService {
         DateTimeFormatter myFormatObj = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
         LocalDateTime dateAndTime = LocalDateTime.now();
         String stringDateTime = myFormatObj.format(dateAndTime);
-        String notification = "Tenant : " + tenant.getUserName() + ": you have to pay for " + billType + " the following amount  " + sum
-                + " until: " + stringDateTime;
-        tenant.getNotifications().add(notification);
+        Bill bill = new Bill(tenant.getBills().size() + 1, billType, Date.from(Instant.now()), false, Integer.parseInt(sum));
+        tenant.getBills().add(bill);
     }
 }

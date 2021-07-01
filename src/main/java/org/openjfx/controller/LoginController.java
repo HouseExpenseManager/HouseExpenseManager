@@ -60,6 +60,7 @@ public class LoginController implements Initializable {
     public void register() throws IOException {
         App.setRoot("register", 360, 500);
     }
+
     public void setLoginService(LoginService loginService) {
         this.loginService = loginService;
     }
